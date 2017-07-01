@@ -71,7 +71,6 @@ let newVue =  {
   		newRoom(formObj,this);
   	},
   	enterRoom:function(room){
-  		//alert(room);
   		enterRoom(room,this);
   	}
   }

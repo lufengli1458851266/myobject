@@ -1,4 +1,4 @@
-import {axPost} from '../../common/HttpBean'
+import {axGet,axGetAsync,axPost} from '../../common/HttpBean'
 import userStore from '../stores/UserStore'
 
 export function zhuce(form,thisa){
@@ -29,3 +29,10 @@ export function login(form,thisa){
 				alert(err);
 		});
 };
+
+export async function getLoginbean(){
+	let res = await axGetAsync('/api/users/getLoginBean');
+	userStore.commit('login',res.data);
+	return res.data;
+	
+}

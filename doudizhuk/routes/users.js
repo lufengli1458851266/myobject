@@ -53,5 +53,10 @@ router.post('/login',async function (ctx, next) {
   		ctx.body=0;
   	}
 });
+router.get('/getLoginBean',async function (ctx, next) {
+  console.log('重新获取loginbean');
+  console.log(ctx.session.loginbean);
+  ctx.body=ctx.session.loginbean;
+})
 
 module.exports = router;

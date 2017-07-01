@@ -1,5 +1,6 @@
 var pomelo = require('pomelo');
 var redis = require('redis');
+var Combat = require('./combat');
 
 module.exports = function(app) {
 	console.log('room中app调用');
@@ -17,8 +18,9 @@ Handler.prototype.enterRoom = function(msg, session, next) {
 	channel = pomelo.app.get('channelService').getChannel(msg.room,true);
 	let self = this;
 	function prep(flag){
-		let uid = {uid:msg.id,room:msg.room};
+		let uid = msg.id;
 		sid = self.app.get('serverId');
+		msg.sid=sid;
 		if(flag){
 			clearRepeat(uid,msg);	//去重
 		}
@@ -75,7 +77,16 @@ Handler.prototype.enterRoom = function(msg, session, next) {
 		});
 		//------------------如果满3人--------------------
 		if(channel.unum==3){
-
+			//------------开始游戏-----------------------
+			combat = new Combat();
+			combat.deal(channel.seat);
+			seats = channel.seat;
+			for(i=0;i<3;i++){
+				pomelo.app.get('channelService').pushMessageByUids('deal', seats[i].paiArr, [{uid:seats[i].id,sid:seats[i].sid}], function(err) { 
+				console.log(err);
+				})
+			}
+			
 		}
 		next(null,{});
 		return true;
@@ -130,10 +141,7 @@ Handler.prototype.enterRoom = function(msg, session, next) {
 }
 
 Handler.prototype.ready = function(msg, session, next) {
-	console.log('session.uid='+session.uid.uid);
-	console.log('session.room='+session.uid.room);
-	channel = pomelo.app.get('channelService').getChannel(session.uid.room,false);
-	console.log(channel.unum);
+	//channel = pomelo.app.get('channelService').getChannel(session.uid,false);
 	next();
 }
 

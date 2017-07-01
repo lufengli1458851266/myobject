@@ -41,9 +41,14 @@ export default class SocketBean {
           //------------被动离开------------------
         this.pomelo.on('leave', function(data){
               alert(data);
-              self.$router.push('/hill');
+              self.$router.push('/gamehill');
             });
         });
+        //-------------被发牌--------------------
+        this.pomelo.on('deal',function(data){
+          console.log(data);
+          alert('收到');
+        })
         
   }
   sendReady(){

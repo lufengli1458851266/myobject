@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import {getLoginbean} from '../actions/UserAction'
 Vue.use(Vuex);			//vuex初始化
 
 let userStore = new Vuex.Store({
@@ -9,13 +10,21 @@ let userStore = new Vuex.Store({
   mutations:{			//事件响应，修改存储的方法集
     zhuce:function(state,data){
       state.loginbean = data;
-      alert('store中收到参数:'+data);
     },
     login:function(state,data){
       state.loginbean = data;
-      alert('store中收到参数:'+data);
     },
     
   }
 });
+userStore.getLoginbean= async function(){
+  let loginbean=this.state.loginbean;
+  alert(loginbean);
+  if(loginbean!=null){
+    return loginbean;
+  }else{
+    alert('重新获取loginbean');
+    return await getLoginbean();
+  }
+}
 export default userStore;

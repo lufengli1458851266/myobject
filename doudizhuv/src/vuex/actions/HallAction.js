@@ -23,8 +23,8 @@ export function newRoom(formObj,thisa){
 		});
 };
 
-export function enterRoom(room,thisa){
-		let msg = userStore.state.loginbean;
+export async function enterRoom(room,thisa){
+		let msg = await userStore.getLoginbean();//userStore.state.loginbean;
 		msg.room = room;
 		thisa.$router.push({ path: '/room', query:msg});
 			
